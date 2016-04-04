@@ -5,7 +5,7 @@
     <div class="list card current-song" ng-class="{skipped: currentSong.rated == false, favorited: currentSong.rated == true}" ng-show="currentSong && !currentSong.hide">
 
       <div class="item item-image">
-        <img ng-src="/img/ionic.png">
+        <img ng-src="{{currentSong.image_large}}">
       </div>
 
       <div class="item">
@@ -25,7 +25,6 @@
       </div>
 
     </div>
-
 
   </ion-content>
 </ion-view>
