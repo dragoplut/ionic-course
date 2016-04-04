@@ -2,7 +2,11 @@
   <ion-content>
 
     <ion-list>
-      <ion-item class="item-avatar" ng-repeat="song in favorites">
+      <ion-item class="item-avatar" ng-repeat="song in favorites" ng-click="openSong(song)">
+        <ion-option-button class="button-energized" ng-click="playSong(song.song_id)">
+            <i class="ion-play"></i>
+        </ion-option-button>
+
         <img ng-src="{{song.image_small}}">
         <h2>{{song.title}}</h2>
         <p>{{song.artist}}</p>
