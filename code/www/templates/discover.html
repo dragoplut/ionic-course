@@ -14,6 +14,12 @@
       </div>
 
       <div class="item tabs tabs-secondary tabs-icon-left">
+        <a class="tab-item" ng-click="playCurrent()">
+          <i class="icon ion-play"></i>
+        </a>
+        <a class="tab-item" ng-click="haltCurrent()">
+          <i class="icon ion-pause"></i>
+        </a>
         <a class="tab-item" ng-click="sendFeedback(false)">
           <i class="icon ion-close"></i>
           Skip
@@ -24,6 +30,10 @@
         </a>
       </div>
 
+    </div>
+
+    <div class="img-lookahead">
+      <img ng-src="{{nextAlbumImg()}}">
     </div>
 
   </ion-content>

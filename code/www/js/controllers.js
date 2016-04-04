@@ -40,6 +40,7 @@ Controller for the discover page
 
     Recommendations.getNextSongs().then(function(){
         $scope.currentSong = Recommendations.queue[0];
+        //Recommendations.playCurrentSong();
     });
 
     $scope.sendFeedback = function (bool) {
@@ -56,8 +57,25 @@ Controller for the discover page
 
         $timeout(function () {
             $scope.currentSong = Recommendations.queue[0];
-        }, 250)
+        }, 250);
+
+        //Recommendations.playCurrentSong();
     };
+
+    $scope.nextAlbumImg = function () {
+        if (Recommendations.queue.length > 1) {
+            return Recommendations.queue[1].image_large;
+        }
+        return '';
+    };
+
+    $scope.playCurrent = function () {
+        Recommendations.playCurrentSong();
+    };
+    $scope.haltCurrent = function () {
+        Recommendations.haltAudio();
+    }
+
 })
 
 
