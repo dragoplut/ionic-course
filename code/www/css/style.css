@@ -91,3 +91,7 @@
   width:1px;
   opacity:0.01;
 }
+
+.favorited-song {
+    color: blueviolet;
+}

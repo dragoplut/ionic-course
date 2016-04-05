@@ -1,6 +1,5 @@
-<ion-view view-title="Discover" class="discover-page">
+<ion-view view-title="Discover. Random 30sec. Spotify tracks." class="discover-page">
   <ion-content scroll="false">
-
 
     <div class="list card current-song" ng-class="{skipped: currentSong.rated == false, favorited: currentSong.rated == true}" ng-show="currentSong && !currentSong.hide">
 
@@ -9,8 +8,8 @@
       </div>
 
       <div class="item">
-        <h2>{{currentSong.title}} <span ng-hide="currentSong.loaded"><i class="ion-loading-c"></i></span></h2>
-        <p>{{currentSong.artist}}</p>
+        <h2>{{currentSong.title}} </h2>  <!--<span ng-hide="currentSong.loaded"><i class="ion-loading-c"></i></span>-->
+        <p>{{currentSong.artist}} </p>
       </div>
 
       <div class="item tabs tabs-secondary tabs-icon-left">
@@ -25,7 +24,7 @@
           Skip
         </a>
         <a class="tab-item" ng-click="sendFeedback(true)">
-          <i class="icon ion-heart"></i>
+          <i class="icon ion-heart {{favoritedStyle}}" ng-click="favoritedSong()"></i>
           Favorite
         </a>
       </div>

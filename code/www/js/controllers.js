@@ -5,39 +5,6 @@ angular.module('songhop.controllers', ['ionic', 'songhop.services'])
 Controller for the discover page
 */
 .controller('DiscoverCtrl', function($scope, $timeout, $ionicLoading, User, Recommendations) {
-    //$scope.songs = [
-    //    {
-    //        "title":"Stealing Cinderella",
-    //        "artist":"Chuck Wicks",
-    //        "image_small":"https://i.scdn.co/image/d1f58701179fe768cff26a77a46c56f291343d68",
-    //        "image_large":"https://i.scdn.co/image/9ce5ea93acd3048312978d1eb5f6d297ff93375d"
-    //    },
-    //    {
-    //        "title":"Venom - Original Mix",
-    //        "artist":"Ziggy",
-    //        "image_small":"https://i.scdn.co/image/1a4ba26961c4606c316e10d5d3d20b736e3e7d27",
-    //        "image_large":"https://i.scdn.co/image/91a396948e8fc2cf170c781c93dd08b866812f3a"
-    //    },
-    //    {
-    //        "title":"Do It",
-    //        "artist":"Rootkit",
-    //        "image_small":"https://i.scdn.co/image/398df9a33a6019c0e95e3be05fbaf19be0e91138",
-    //        "image_large":"https://i.scdn.co/image/4e47ee3f6214fabbbed2092a21e62ee2a830058a"
-    //    },
-    //    {
-    //        "title":"Blinking in the lake",
-    //        "artist":"James Duck",
-    //        "image_small":"https://i.scdn.co/image/398df9a33a6019c0e95e3be05fbaf19be0e91138",
-    //        "image_large":"https://i.scdn.co/image/4e47ee3f6214fabbbed2092a21e62ee2a830058a"
-    //    },
-    //    {
-    //        "title":"Switch it on",
-    //        "artist":"Mike Jugger",
-    //        "image_small":"https://i.scdn.co/image/398df9a33a6019c0e95e3be05fbaf19be0e91138",
-    //        "image_large":"https://i.scdn.co/image/4e47ee3f6214fabbbed2092a21e62ee2a830058a"
-    //    }];
-    //$scope.currentSong = angular.copy($scope.songs[0]);
-
     /**
      * Shows & hide loading icon, depend on server response.
      */
@@ -52,6 +19,19 @@ Controller for the discover page
         $ionicLoading.hide();
     };
     showLoading();
+
+    var favoriteSongCheck = function () {
+        if (!User.favorites) return true;
+        //console.info('1: Check favorited. ' + User.favorites);
+        for (var i = 0; i < User.favorites.length; i++) {
+            if (User.favorites[i].open_url === $scope.currentSong.open_url) {
+                //$scope.favoritedStyle = 'favorited-song';
+                console.info('2: Found in favorites. ' + $scope.currentSong.open_url);
+                return false;
+            }
+        }
+        return true;
+    };
 
     Recommendations.init().then(function(){
         $scope.currentSong = Recommendations.queue[0];
@@ -68,17 +48,15 @@ Controller for the discover page
      */
 
     $scope.sendFeedback = function (bool) {
-        if (bool) return User.addSongToFavorites($scope.currentSong);
+        if (bool) {
+            $scope.favoritedStyle = 'favorited-song';
+            //console.info($scope.currentSong);
+            if (!favoriteSongCheck()) return console.info('Duplicate song!');
+            return User.addSongToFavorites($scope.currentSong);
+        }
         $scope.currentSong.rated = bool;
         $scope.currentSong.hide = true;
-
-        //$timeout(function () {
-        //    var randomSong = Math.round(Math.random() * ($scope.songs.length - 1));
-        //    $scope.currentSong = angular.copy($scope.songs[randomSong]);
-        //}, 250);
-
-        //$scope.currentSong.loaded = false;
-        //console.info('Timeout: ', $scope.currentSong.loaded);
+        $scope.favoritedStyle = '';
 
         Recommendations.nextSong();
 
@@ -88,7 +66,7 @@ Controller for the discover page
 
         Recommendations.playCurrentSong().then(function () {
             $scope.currentSong.loaded = true;
-            console.info($scope.currentSong.loaded);
+            //console.info($scope.currentSong.loaded);
         });
     };
 
@@ -117,13 +95,18 @@ Controller for the discover page
 /*
 Controller for the favorites page
 */
-.controller('FavoritesCtrl', function($scope, User, Recommendations) {
+.controller('FavoritesCtrl', function($scope, $location, User, Recommendations) {
+    $scope.username = User.username;
     $scope.favorites = User.favorites;
     $scope.removeSong = function (song, index) {
         User.removeSongFromFavorites(song, index);
     };
-    $scope.playSong = function (song) {
-        Recommendations.playFavoriteSong(song);
+    //$scope.playSong = function (song) {
+    //    Recommendations.playFavoriteSong(song);
+    //};
+    $scope.logout = function () {
+        User.destroySession();
+        $location.path('index.html');
     }
 })
 
@@ -147,4 +130,18 @@ Controller for our tab bar
         Recommendations.init();
     }
 
+})
+
+/*
+Controller for splash page (sign in page)
+*/ 
+
+.controller('SplashCtrl', function ($scope, $state, User) {
+    $scope.submitForm = function (username, signingUp) {
+        User.auth(username, signingUp).then(function () {
+            $state.go('tab.discover');
+        }, function () {
+            alert('Something is wrong, try another name.');
+        });
+    };
 });
