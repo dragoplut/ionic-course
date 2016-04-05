@@ -144,4 +144,5 @@ Controller for splash page (sign in page)
             alert('Something is wrong, try another name.');
         });
     };
+    $scope.infoDebug = '';
 });

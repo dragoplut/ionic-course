@@ -22,6 +22,9 @@ angular.module('songhop.services', ['ionic.utils'])
             return $http.post(SERVER.url + '/' + authRoute, {username: username})
                 .success(function (data) {
                     o.setSession(data.username, data.session_id, data.favorites)
+                })
+                .error(function(err){
+                    alert(err);
                 });
         };
         o.addSongToFavorites = function (song) {
