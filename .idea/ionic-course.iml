@@ -2,6 +2,7 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/code/platforms" />
       <excludeFolder url="file://$MODULE_DIR$/code/www/lib/jshint/src/platforms" />
     </content>
     <orderEntry type="inheritedJdk" />

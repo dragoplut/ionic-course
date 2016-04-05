@@ -3,6 +3,7 @@
   background:url(/img/splash-bkg.jpg);
   background-size: cover;
   background-repeat: no-repeat;
+  background-color: lightgreen;
 }
 
 .splash-page .card {
